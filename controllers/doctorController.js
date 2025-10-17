@@ -100,3 +100,16 @@ exports.deleteDoctor = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+// 📊 Get total number of doctors
+exports.getDoctorCount = async (req, res) => {
+  try {
+    const count = await Doctor.countDocuments();
+    res.json({ totalDoctors: count });
+  } catch (err) {
+    console.error("Error fetching doctor count:", err);
+    res.status(500).json({ error: "Server error while counting doctors" });
+  }
+};
+
