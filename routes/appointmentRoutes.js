@@ -2,10 +2,22 @@ const express = require("express");
 const router = express.Router();
 const Appointment = require("../models/Appointment");
 
-// GET all appointments
+// GET all appointments (with optional search)
 router.get("/", async (req, res) => {
   try {
-    const appointments = await Appointment.find().sort({ createdAt: -1 });
+    const { search } = req.query;
+
+    // Build query object
+    const query = search
+      ? {
+          $or: [
+            { patient: { $regex: search, $options: "i" } }, // case-insensitive
+            { doctor: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const appointments = await Appointment.find(query).sort({ createdAt: -1 });
     res.json(appointments);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
