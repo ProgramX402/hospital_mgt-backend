@@ -54,7 +54,6 @@ temp/
 dump/
 data/
 *.bson
-*.json
 
 # TypeScript build artifacts (if using TS)
 *.tsbuildinfo
