@@ -7,43 +7,43 @@ router.get("/", async (req, res) => {
   try {
     const { search } = req.query;
 
-    // Populate doctor and patient fields from their collections
+    // Base query
     let query = Appointment.find()
-      .populate("doctor", "name") // only return doctor.name
-      .populate("patient", "name") // only return patient.name
+      .populate("doctor", "name email specialty") // populate only relevant doctor fields
+      .populate("patient", "name email") // populate only relevant patient fields
       .sort({ createdAt: -1 });
 
-    // Optional search (by doctor or patient name)
+    // Optional search — allows searching by doctor name, patient name, or department
     if (search) {
-      query = Appointment.find()
-        .populate({
-          path: "doctor",
-          select: "name",
-          match: { name: { $regex: search, $options: "i" } },
-        })
-        .populate({
-          path: "patient",
-          select: "name",
-          match: { name: { $regex: search, $options: "i" } },
-        })
+      // Using RegExp for case-insensitive search
+      const regex = new RegExp(search, "i");
+
+      // Fetch all, then filter manually based on populated fields
+      const appointments = await Appointment.find()
+        .populate("doctor", "name")
+        .populate("patient", "name")
         .sort({ createdAt: -1 });
+
+      const filtered = appointments.filter(
+        (a) =>
+          a.doctor?.name?.match(regex) ||
+          a.patient?.name?.match(regex) ||
+          a.department?.match(regex)
+      );
+
+      return res.json(filtered);
     }
 
+    // Default: return all
     const appointments = await query;
-
-    // Filter out any null matches when searching
-    const filteredAppointments = search
-      ? appointments.filter((a) => a.doctor || a.patient)
-      : appointments;
-
-    res.json(filteredAppointments);
+    res.json(appointments);
   } catch (error) {
     console.error("Error fetching appointments:", error);
     res.status(500).json({ message: "Server error", error });
   }
 });
 
-// ✅ POST create new appointment
+// ✅ POST create a new appointment
 router.post("/", async (req, res) => {
   try {
     const { patient, doctor, department, date, time, status, purpose } = req.body;
@@ -53,6 +53,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "All fields including purpose are required" });
     }
 
+    // Create new appointment
     const newAppt = new Appointment({
       patient,
       doctor,
@@ -63,8 +64,11 @@ router.post("/", async (req, res) => {
       purpose,
     });
 
+    // Save and populate references before returning
     const saved = await newAppt.save();
-    res.status(201).json(saved);
+    const populated = await saved.populate("doctor", "name").populate("patient", "name");
+
+    res.status(201).json(populated);
   } catch (error) {
     console.error("Error creating appointment:", error);
     res.status(400).json({ message: "Error creating appointment", error });
