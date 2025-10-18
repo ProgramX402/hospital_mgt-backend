@@ -27,7 +27,14 @@ router.get("/", async (req, res) => {
 // POST create appointment
 router.post("/", async (req, res) => {
   try {
-    const newAppt = new Appointment(req.body);
+    const { patient, doctor, department, date, time, status, purpose } = req.body;
+
+    // Basic validation
+    if (!patient || !doctor || !department || !date || !time || !purpose) {
+      return res.status(400).json({ message: "All fields including purpose are required" });
+    }
+
+    const newAppt = new Appointment({ patient, doctor, department, date, time, status, purpose });
     const saved = await newAppt.save();
     res.status(201).json(saved);
   } catch (error) {

@@ -11,6 +11,7 @@ const appointmentSchema = new mongoose.Schema({
     enum: ["Pending", "Ongoing", "Completed", "Cancelled"],
     default: "Pending",
   },
+  purpose: { type: String, required: true }, // ✅ Purpose of the surgery
 }, { timestamps: true });
 
 module.exports = mongoose.model("Appointment", appointmentSchema);
