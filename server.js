@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const patientRoutes = require("./routes/patientRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
 connectDB();
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/auth", authRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/patients", patientRoutes);

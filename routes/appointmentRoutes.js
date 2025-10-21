@@ -1,11 +1,17 @@
 const express = require("express");
 const router = express.Router();
+// 1. 🔑 Import the protect middleware
+const { protect } = require("../middleware/authMiddleware"); 
 const {
-  createAppointment,
-  getAppointments,
-  getAppointmentById,
-  getTodayAppointments,
+  createAppointment,
+  getAppointments,
+  getAppointmentById,
+  getTodayAppointments,
 } = require("../controllers/appointmentController");
+
+// 2. 🔒 Apply the protect middleware to ALL routes in this file
+// All route definitions below this line will require a valid JWT in the header
+router.use(protect); 
 
 // POST → Create appointment
 router.post("/", createAppointment);
