@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../middlewares/multer");
 // 🔑 Import the protect middleware
-const { protect } = require("../middleware/authMiddleware"); 
+const { protect } = require("../middlewares/authMiddleware"); 
 const {
   createPatient,
   getPatients,

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // 1. 🔑 Import the protect middleware
-const { protect } = require("../middleware/authMiddleware"); 
+const { protect } = require("../middlewares/authMiddleware"); 
 const {
   createAppointment,
   getAppointments,

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 // 1. 🔑 Import the protect middleware
-const { protect } = require("../middleware/authMiddleware"); 
+const { protect } = require("../middlewares/authMiddleware"); 
 const doctorController = require("../controllers/doctorController");
 
 // Multer memory storage (no saving to disk)
