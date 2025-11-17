@@ -12,18 +12,18 @@ const upload = multer({ storage });
 // 2. 🔒 Apply 'protect' to each restricted route
 
 // POST → Create doctor (Requires login to create a doctor)
-router.post("/", protect, upload.single("image"), doctorController.createDoctor);
+router.post("/", upload.single("image"), doctorController.createDoctor);
 
 // GET → All doctors (Requires login to view the list)
-router.get("/", protect, doctorController.getDoctors);
+router.get("/", doctorController.getDoctors);
 
 // GET → Total doctors count (Requires login to view the count)
-router.get("/count", protect, doctorController.getDoctorCount); 
+router.get("/count", doctorController.getDoctorCount); 
 
 // PUT → Update doctor (Requires login to modify a doctor's record)
-router.put("/:id", protect, upload.single("image"), doctorController.updateDoctor);
+router.put("/:id", upload.single("image"), doctorController.updateDoctor);
 
 // DELETE → Delete doctor (Requires login to delete a doctor)
-router.delete("/:id", protect, doctorController.deleteDoctor);
+router.delete("/:id",doctorController.deleteDoctor);
 
 module.exports = router;

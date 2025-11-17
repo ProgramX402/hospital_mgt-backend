@@ -11,7 +11,7 @@ const {
 
 // 2. 🔒 Apply the protect middleware to ALL routes in this file
 // All route definitions below this line will require a valid JWT in the header
-router.use(protect); 
+
 
 // POST → Create appointment
 router.post("/", createAppointment);

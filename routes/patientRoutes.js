@@ -20,19 +20,19 @@ const {
 // ===================================
 
 // POST → Create patient
-router.post("/", protect, upload.single("image"), createPatient);
+router.post("/", upload.single("image"), createPatient);
 
 // GET → All patients
-router.get("/", protect, getPatients);
+router.get("/", getPatients);
 
 // GET → Single patient by ID
-router.get("/:id", protect, getPatient);
+router.get("/:id", getPatient);
 
 // PUT → Update patient
-router.put("/:id", protect, upload.single("image"), updatePatient);
+router.put("/:id", upload.single("image"), updatePatient);
 
 // DELETE → Delete patient
-router.delete("/:id", protect, deletePatient);
+router.delete("/:id", deletePatient);
 
 
 // ==========================================
@@ -40,16 +40,16 @@ router.delete("/:id", protect, deletePatient);
 // ==========================================
 
 // GET → Medical history for a patient
-router.get("/:id/history", protect, getHistory);
+router.get("/:id/history", getHistory);
 
 // POST → Add history entry
-router.post("/:id/history", protect, addHistory);
+router.post("/:id/history", addHistory);
 
 // PUT → Update history entry
-router.put("/:id/history/:historyId", protect, updateHistory);
+router.put("/:id/history/:historyId", updateHistory);
 
 // DELETE → Delete history entry
-router.delete("/:id/history/:historyId", protect, deleteHistory);
+router.delete("/:id/history/:historyId", deleteHistory);
 
 
 module.exports = router;

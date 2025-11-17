@@ -11,7 +11,19 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+
+// 💡 CORS Configuration to restrict origin
+const allowedOrigins = ["https://medicareconnect.netlify.app"];
+const corsOptions = {
+  origin: allowedOrigins,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Optional: specify allowed HTTP methods
+  credentials: true, // Optional: if you need to handle cookies/authentication
+  optionsSuccessStatus: 200 // Optional: for legacy browser support
+};
+
+// Apply the CORS middleware with the specific options
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // Routes
